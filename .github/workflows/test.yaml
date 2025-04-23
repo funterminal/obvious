@@ -22,6 +22,9 @@ jobs:
         run: |
           sudo dpkg -i obvious.deb || sudo apt-get install -f -y
 
+      - name: Add Obvious to PATH
+        run: echo "usr/local/bin" >> $GITHUB_PATH
+  
       - name: Create obvious.txt with Command
         run: |
           echo "apt install cowsay -y" > obvious.txt
