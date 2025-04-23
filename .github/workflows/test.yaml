@@ -1,0 +1,35 @@
+name: Test Obvious Script
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-obvious:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download Obvious .deb Package
+        run: |
+          curl -L -o obvious.deb https://github.com/funterminal/obvious/raw/f8de514cb5533b2ecfe928df378cdc23b30b0fc1/obvious-debian.deb
+
+      - name: Install Obvious Package
+        run: |
+          sudo dpkg -i obvious.deb || sudo apt-get install -f -y
+
+      - name: Create obvious.txt with Command
+        run: |
+          echo "apt install cowsay -y" > obvious.txt
+
+      - name: Setup Obvious with obvious.txt
+        run: |
+          obvious setup obvious.txt
+
+      - name: Run Command via Obvious
+        run: |
+          echo "y" | obvious "apt install cowsay -y"
